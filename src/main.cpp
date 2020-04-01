@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ESP8266httpUpdate.h>
-String version = "1.0.0.0";
+String version = "1.0.0.1";
 char SSID[33] = "SohaDevice";
 char PASS[33] = "DamkpKCk";
 void doUpdate();
@@ -31,12 +31,12 @@ void loop()
 {
   // Lets blink
   digitalWrite(2, 1);
-  delay(50);
+  delay(250);
   digitalWrite(2, 0);
-  delay(50);
+  delay(250);
 
   updateCheckTimer++;
-  if(updateCheckTimer > 100)
+  if(updateCheckTimer > 50)
   {
     updateCheckTimer = 0;
     doUpdate();
