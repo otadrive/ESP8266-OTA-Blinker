@@ -1,13 +1,18 @@
 #include <Arduino.h>
 #include <ESP8266httpUpdate.h>
 String version = "1.0.0.0";
+char SSID[33] = "SohaDevice";
+char PASS[33] = "DamkpKCk";
 void doUpdate();
 
 void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  WiFi.begin("SohaDevice", "DamkpKCk");
+  Serial.print("Blinker version ");
+  Serial.println(version);
+
+  WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED)
   {
     Serial.println(".");
@@ -26,12 +31,12 @@ void loop()
 {
   // Lets blink
   digitalWrite(2, 1);
-  delay(100);
+  delay(50);
   digitalWrite(2, 0);
-  delay(100);
+  delay(50);
 
   updateCheckTimer++;
-  if(updateCheckTimer > 30)
+  if(updateCheckTimer > 100)
   {
     updateCheckTimer = 0;
     doUpdate();
@@ -40,11 +45,15 @@ void loop()
 
 void doUpdate()
 {
-  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=9a03f4fb-98c5-4963-9d39-cc9181f65edd";
+  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=00000000-0000-0000-0000-000000000000";
+  WiFiClient client;
   url += "&s=" + String(CHIPID);
   url += "&v=" + version;
 
-  t_httpUpdate_return ret = ESPhttpUpdate.update(url, version);
+  Serial.println("Get firmware from url:");
+  Serial.println(url);
+
+  t_httpUpdate_return ret = ESPhttpUpdate.update(client, url, version);
   switch (ret)
   {
   case HTTP_UPDATE_FAILED:
