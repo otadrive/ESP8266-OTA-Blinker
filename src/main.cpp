@@ -46,7 +46,7 @@ void loop()
 
 void doUpdate()
 {
-  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=7e5dab9b-6101-498e-ba3b-53aed55962a2";
+  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=00000000-0000-0000-0000-000000000000";
   WiFiClient client;
   url += "&s=" + String(CHIPID);
   url += "&v=" + version;
