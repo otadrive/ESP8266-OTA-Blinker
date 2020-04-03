@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <ESP8266httpUpdate.h>
-String version = "1.0.0.2";
+
+String version = "1.0.0.0";
 char SSID[33] = "SohaDevice";
 char PASS[33] = "DamkpKCk";
 void doUpdate();
@@ -31,12 +32,12 @@ void loop()
 {
   // Lets blink
   digitalWrite(2, 1);
-  delay(750);
+  delay(50);
   digitalWrite(2, 0);
-  delay(750);
+  delay(50);
 
   updateCheckTimer++;
-  if(updateCheckTimer > 15)
+  if(updateCheckTimer > 45)
   {
     updateCheckTimer = 0;
     doUpdate();
@@ -45,7 +46,7 @@ void loop()
 
 void doUpdate()
 {
-  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=00000000-0000-0000-0000-000000000000";
+  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=7e5dab9b-6101-498e-ba3b-53aed55962a2";
   WiFiClient client;
   url += "&s=" + String(CHIPID);
   url += "&v=" + version;
