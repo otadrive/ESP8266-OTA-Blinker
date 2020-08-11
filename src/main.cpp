@@ -1,7 +1,12 @@
 #include <Arduino.h>
 #include <ESP8266httpUpdate.h>
 
-String version = "1.0.0.0";
+// To inject firmware info into binary file, You have to use following macro according to let
+// OTAdrive to detect binary info automatically
+#define ProductKey "00000000-0000-0000-0000-000000000000"
+#define Version "1.0.0.0"
+#define MakeFirmwareInfo(k, v) "&_FirmwareInfo&k=" k "&v=" v "&FirmwareInfo_&"
+
 char SSID[33] = "SohaDevice";
 char PASS[33] = "DamkpKCk";
 void doUpdate();
@@ -11,7 +16,7 @@ void setup()
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.print("Blinker version ");
-  Serial.println(version);
+  Serial.println(Version);
 
   WiFi.begin(SSID, PASS);
   while (WiFi.status() != WL_CONNECTED)
@@ -46,15 +51,15 @@ void loop()
 
 void doUpdate()
 {
-  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?k=00000000-0000-0000-0000-000000000000";
+  String url = "http://otadrive.com/DeviceApi/GetEsp8266Update?";
   WiFiClient client;
   url += "&s=" + String(CHIPID);
-  url += "&v=" + version;
+  url += MakeFirmwareInfo(ProductKey, Version);
 
   Serial.println("Get firmware from url:");
   Serial.println(url);
 
-  t_httpUpdate_return ret = ESPhttpUpdate.update(client, url, version);
+  t_httpUpdate_return ret = ESPhttpUpdate.update(client, url, Version);
   switch (ret)
   {
   case HTTP_UPDATE_FAILED:
